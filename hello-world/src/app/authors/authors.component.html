@@ -1,0 +1,12 @@
+<h3># of Authors: {{authors.length}}</h3>
+<ul>
+  <li *ngFor="let author of authors">{{author}}</li>
+</ul>
+<img src="{{imageUrl}}" alt="angular" width="100px">
+<h4>Or using property binding</h4>
+<img [src]="imageUrl2" alt="angular" width="100px">
+<table>
+  <tr>
+    <td [attr.colspan]="colSpan">test</td> <!-- Try to delete 'attr.' and see the error in Chrome's console -->
+  </tr>
+</table>

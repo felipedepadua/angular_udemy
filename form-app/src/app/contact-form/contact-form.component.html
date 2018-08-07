@@ -1,0 +1,110 @@
+<!--
+  See video 74:
+  Template-driven form VS Reactive forms
+    - In this section we will create Template-driven forms, which are recommended for simple forms
+      - For complex forms (custom validations, etc.) Reactive forms are recommended
+-->
+
+<!-- [ngForm directive is automatically applied to <form>] - https://angular.io/api/forms/NgForm#selectors -->
+<!-- ngForm has an output property called ngSubmit -->
+<form #f="ngForm" (ngSubmit)="submit(f)"><!-- We can create a template variable to get a reference to the ngForm directive -->
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <!-- In 'pattern', we can use Regex. For simplicity, we put 'banana', which means it will be valid only if we type 'banana'  -->
+    <input 
+      required
+      minlength="3"
+      maxlength="10"
+      pattern="banana" 
+      ngModel 
+      name="firstName" 
+      id="firstName" 
+      #firstName="ngModel" 
+      (change)="log(firstName)"   
+      type="text" 
+      class="form-control">
+    <!-- ngModel will be linked to the name attribute [if you dont put it, you will get an error] 
+        #firstName is not mandatory. We used it to hold the value typed (using ngModel) and pass it to the function
+          - (This is just some extra example)
+    -->
+    <div 
+      class="alert alert-danger" 
+      *ngIf="!firstName.valid && firstName.touched">
+      <div *ngIf="firstName.errors.required">
+        First Name is required
+      </div> <!--We will display this only if we have the required validation error-->
+      <div *ngIf="firstName.errors.minlength">
+        First Name should be at least {{firstName.errors.minlength.requiredLength}} characters
+      </div>
+      <div *ngIf="firstName.errors.pattern">
+        First Name doesnt match the pattern
+      </div>
+    </div>
+    <!-- firstName.valid refers to #firstName -->
+  </div>
+
+  <div class="form-group">
+      <label for="comment">Comment</label>
+      <textarea ngModel name="comment" id="comment" cols="30" rows="10" class="form-control"></textarea>
+  </div>
+  <!-- Also check video 81 ngModelGroup if have big forms and you want to separate parts by group 
+    Now, under value, you will have contact group and inside (as a 'child'/nested) you will have 'phone'
+  -->
+  <div ngModelGroup="contact" #contact="ngModelGroup"> 
+    <!-- We also can put a template variable as well to reference it (ex: for some validation: show all errors from this group) -->
+    <div *ngIf="contact.invalid && contact.touched" 
+         class="alert alert-danger" >
+        Invalid!
+        <!-- Here we can do the individual error messages like from firstName -->
+    </div> 
+    <div class="form-group">
+        <label for="phone">Phone</label>
+        <input ngModel type="number" class="form-control" required name="phone" id="phone">
+    </div>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" ngModel name="isSubscribed"> Subscribe to mailing list
+    </label>
+  </div>
+  <div class="form-group">
+    <label for="contactMethod">Contact Method</label>
+    <!-- To allow to select only one, remove the 'multiple' -->
+    <select multiple ngModel name="contactMethod" id="contactMethod" class="form-control">
+      <option value="" disabled></option>
+      <!-- We use ngValue cuz the regular HTML 'value' can only store string 
+          Most applications, you will only need to pass something like and ID [value]="method.id" , 
+          but for some reason if you need to pass an object, ngValue is helpful
+      -->
+      <option *ngFor="let method of contactMethods" [ngValue]="method">
+        {{method.name}}
+      </option>
+    </select>
+  </div>
+  <div *ngFor="let method of contactMethods" class="radio">
+    <label>
+      <input ngModel type="radio" name="contactMethod" [value]="method.id"> {{method.name}}
+    </label>
+  </div>
+  <p>
+    {{f.value | json}} <!-- This is useful for debuggin purposes -->
+  </p>
+  <button class="btn btn-primary"
+          [disabled]="!f.valid">
+    Submit
+  </button>
+</form>
+
+<!--
+  SEE VIDEO 74:
+  We have class FormControl to verify things like:
+  - value, touched, untouched, dirty, pristine, valid, errors
+
+  Similarly, we have the FormGroup class that represent a group of controls in a form.
+  All the properties above (value, touched, valid, errors, etc.) are also available for FormGroup
+  - For instance, by checking if FormGroup is valid:
+      - It will be true if ALL the formControls in the group are valid 
+        (Similarly, we have acces to all validation errors from the group).
+
+  PS: THE CLASS form-group AND form-control ARE BOOTSTRAP CLASSES [NOTHING TO DO WITH ANGULAR]
+-->

@@ -1,0 +1,12 @@
+<h1>Angular</h1>
+
+<br>
+<courses></courses>
+
+<hr>
+<br> <h2>Authors</h2>
+<app-authors></app-authors>
+
+<hr>
+<app-course [isComment]="post.comment" (change)="onCommentChange($event)" ></app-course>
+<!-- This function will be called whenever this component raises the 'change' event -->

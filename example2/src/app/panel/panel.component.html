@@ -1,0 +1,16 @@
+<div>
+  <div>
+    <ng-content select=".heading"></ng-content> 
+    <!-- We can use any CSS selector: we could use a class[like above], and Id or an element
+         - If in the consumer of this panel component, we have an element that matches this selector [in this case
+         an element with the heading class], that element will be placed here! (It will replace <ng-content>)
+
+          PS: You dont need a selector if you only have ONE ng-content
+              For instance, delete the ng-content on line 13 and delete select=".heading" - It would still work the same (It
+              would bring the two DIVs [from line 4 to 8 on app.component.html] )
+    -->
+  </div>
+  <div>
+    <ng-content select=".body"></ng-content>
+  </div>
+</div> 

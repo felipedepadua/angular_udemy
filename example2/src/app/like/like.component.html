@@ -1,0 +1,50 @@
+<hr>
+<div>
+  <i class="fa fa-apple" 
+    style="font-size:3em; cursor: pointer"
+    [style.color]=" isLiked ? 'red' : 'grey' " 
+    (click)="onClickLike()">
+  </i>
+</div>
+<div>
+  <h3>Likes: {{likesCount}}</h3>
+  <!-- To use NgModel you have to import FormsModule under app.module.ts-->
+  <input [(ngModel)]="likesCount"/>
+</div>
+<div>
+  <p>{{body}}</p>
+</div>
+<hr>
+
+
+<br><br>
+<p>click/Like the apple above to turn this into Apple:</p>
+  <!-- Instead of this, we can use ngClass instead of using multiple class bindings. 
+    Also check the use of ngStyle, instead of using multiple style bindings, ex: 
+      [style.backgroundColor]=" isLiked ? 'red' : 'grey' " )
+      [style.fontWeight]=" isLiked ? 'bold' : 'normal' " )
+      // PS: instead of the above that changes the style directly, it is better practice to change by adding/removing class
+      // Like creating classes to should be applied or not using ngClass
+
+      <i class="fa" 
+            [class.fa-comment]="isComment"
+            [class.fa-apple]="!isComment" 
+      ></i>
+  -->
+<i style="font-size:3em;" class="fa" 
+  [ngClass]="{
+    'fa-comment' : !isLiked,
+    'fa-apple' : isLiked
+  }"
+  [ngStyle]="{
+    'backgroundColor' : isLiked ? 'red' : 'grey',
+    'fontWeight' : isLiked ? 'bold' : 'normal'
+  }"
+>test</i>
+
+<br><br>
+<h4> For video 70 - check line 39 of like.component.ts </h4>
+<!-- If the value can be null: 1st Possible solution using *ngIf -->
+<span *ngIf="task.assignee">{{task.assignee.name}}</span>
+<!-- If the value can be null: 2st Possible solution using 'Safe Traversal Operator' -->
+<span>{{task.assignee?.name}}</span> <!--If assignee is null or undefined, ANgular will ignore this-->

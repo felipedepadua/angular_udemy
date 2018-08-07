@@ -1,0 +1,88 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<app-panel>
+    <!-- We will provide custom content to our reusable components -->
+    <ng-container class="heading">Heading</ng-container>
+    <!-- ng-container is a custom element that we can use to pass only the value/content (which is 'Heading') without
+         any tags wrapping it [ex: no div or p]-->
+    <div class="body">
+        <h2>Body</h2>
+        <p>Some content</p>
+    </div>
+</app-panel>
+
+<app-like
+    [likesCount] = "tweet.likesCount"
+    [isLiked] = "tweet.isLiked"
+    [body] = "tweet.body"
+    (changed) = "clicked($event)" 
+></app-like>
+<!-- It has to be called $event - I tried to call it $e and it was getting undefined as return -->
+
+<hr>
+<p>We use directives to modify the DOM. There are two types of directives:</p>
+<p>Structural: Modify the structure of the DOM (by adding or removing elements). We need to prefix them with an *</p>
+<p>Attribute: Modify the Attributes of the DOM</p>
+<div *ngIf="courses.length > 0">
+    <!-- it could also be a function that returns true or false: *ngIf="doWeHaveCourses()" -->
+    List of Courses: 
+</div>
+<div *ngIf="courses.length == 0"> <!-- If false, it wont even be added to the DOM-->
+    No courses yet!
+</div>
+
+<h4>Other way to do this:</h4>
+<button (click)="onAdd()">Add</button>
+<button (click)="onReset()">Reset</button>
+<div *ngIf="courses.length > 0; then coursesList else noCourses">  List of Courses: {{courses}} </div>
+<ng-template #coursesList>List of Courses: 
+    <ul>
+        <!-- the trackby is not mandatory; we used it for performance reasons: watch video 66 
+            We used it just for learning, but you would only use it if you have a long list and complex markup
+            in which this approach could get you a significant improved performance
+        -->
+        <li *ngFor="let course of courses; index as i; even as isEven; trackBy: trackCourse"> 
+            {{i}} - {{course.name}} <span *ngIf="isEven">(EVEN)</span>
+            <button (click)="onRemove(course)">Remove</button>
+            <button (click)="onChange(course)">Chage Name</button>
+        </li>
+        <!-- index is just one example of exported value, there are many other available
+            * Check: https://angular.io/api/common/NgForOf#local-variables 
+            You can use even, first, etc., for example, to apply styling to a table of the courses
+        -->
+    </ul>
+</ng-template>
+<ng-template #noCourses>No courses yet!</ng-template> <!-- Assign this template an idetifier - ex: noCourses-->
+
+<h4>Using hidden</h4>
+<div hidden>Hello, I am no being displayed cuz I am hidden</div>
+<div [hidden]="courses.length == 0">I have Courses! (Using property binding)</div>
+
+<br>
+<ul class="nav nav-pills">
+    <li [class.active]="viewMode == 'map'"><a (click)="viewMode = 'map'">Map View </a></li>
+    <li [class.active]="viewMode == 'list'"><a (click)="viewMode = 'list'"> &nbsp; List View</a></li>
+</ul>
+<div [ngSwitch]="viewMode">
+    <div *ngSwitchCase="'map'">Map View content</div>
+    <div *ngSwitchCase="'list'">List View content</div>
+    <div *ngSwitchDefault>Otherwise</div>
+</div>
+
+<hr>
+<input type="text" [appInputFormat]="'uppercase'"> <!-- Angular will aplly our custom directive to this input-->
+<!-- You dont need to pass data if you dont need for your directive. See beginning of video 71 -->
+    
+<hr>
+<p>CLick on the accordion body to make it uppercase</p>
+<zippy [title]="'Shipping Details'">
+    Shipping Details Content
+</zippy>
+<!-- Look at the attribute binding. The below and above works, but this below is simpler! -->
+<zippy title="Billing Details">
+        Billing Details Content
+</zippy>
+<!-- The content of <zippy> will be inside the <ng-content> in the zippy.component.HTML -->
+<!-- Notice how the first and second <zippy> are independent from each other. Thats COOL!
+    For example, they have their own title variable (otherwise, if we clicked on one, both would show - 
+    THIS WOULD NOT MAKE COMPONENTS VERY REUSABLE ) -->
+

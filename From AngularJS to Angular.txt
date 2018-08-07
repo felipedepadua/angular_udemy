@@ -1,0 +1,2 @@
+From AngularJS to Angular:
+-https://angular.io/guide/ajs-quick-reference

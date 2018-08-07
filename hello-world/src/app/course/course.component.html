@@ -1,0 +1,35 @@
+<h1>Course:</h1>
+<ul>
+  <li>{{ course.title | uppercase | lowercase }}</li> 
+  <!-- Sequence of pipes: first it converts to Uppercase, then it gets the uppercase title and convert to lowercase-->
+  <li>{{ course.students | number }}</li> <!-- to apply decimal -->
+  <li>{{ course.rating | number:'2.2' }}</li>
+  <li>{{ course.price | currency:'BRL':true:'1.2' }}</li> <!-- minimum 1 after th decimal part and exactly 2 decimals -->
+  <li>{{ course.releaseDate | date:'shortDate'}}</li>
+</ul>
+<br>
+<p>{{text | summary:'20' }}</p>
+<h3>exercise:</h3>
+<p>Use Font Awesome [Bootstrap 4 doesnt provide glyphicons anymore]: https://www.npmjs.com/package/font-awesome</p>
+<p>Downloa it using NPM and add it in the style.css file</p>
+<h2>Tutorial: https://www.w3schools.com/icons/fontawesome_icons_intro.asp</h2>
+<p>List of icons: https://fontawesome.com/icons?d=gallery</p>
+
+<i class="fa fa-apple"></i> <!-- find an icon and create class='fa fa-<name>' -->
+<i class="fa fa-spinner fa-spin"></i>
+<i class="fa fa-circle-o-notch fa-spin"></i>
+<i class="fa fa-refresh fa-spin"></i>
+<i class="fa fa-cog fa-spin"></i>
+<i class="fa fa-spinner fa-pulse"></i>
+<i class="fa fa-comment-slash"></i>  
+
+<br><br>
+<p>click the icon below to toggle:</p>
+<div style="font-size:3em; color:Tomato" >
+    <i class="fa" 
+      [class.fa-comment]="isComment"
+      [class.fa-apple]="!isComment" 
+      (click)="onClickComment()">
+    </i>
+</div>
+
